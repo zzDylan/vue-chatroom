@@ -1,0 +1,98 @@
+<template>
+	<div class="panel">
+		<div>
+			<div class="logo">
+				<img src="@/assets/logo.jpg">
+				<div>大吉大利今晚IT</div>
+			</div>
+			<div class="input-box">
+				<input type="text" placeholder="请输入用户名">
+			</div>
+			<div class="input-box">
+				<input type="text" placeholder="请输入密码">
+			</div>
+			<div class="button-div">
+				<button class="panel-button" type="button">登陆</button>
+			</div>
+			<div class="link-div">
+				<router-link to="/register" href="" class="link">注册</router-link>
+			</div>
+		</div>
+		
+	</div>
+</template>
+
+<script type="text/javascript">
+	
+</script>
+
+<style>
+	.panel{
+		background: url(../assets/login_bg.jpg) no-repeat left top;
+		background-size: cover;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left:0;
+		right:0;
+		bottom: 0;
+	}
+	.logo{
+		display: flex;
+		padding: 25px;
+		justify-content: center;
+		align-items: center;
+		flex-direction:column;
+	}
+	.logo img{
+		width: 80px;
+		height:80px;
+		border-radius: 12px;
+		margin:10px;
+	}
+	.panel input{
+		border-width: 0px;
+		padding: 15px;
+		width:100%;
+		background-color:transparent;
+		font-size: 1rem;
+		/*消除高亮*/
+		-webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+        -webkit-user-select: none;
+        -moz-user-focus: none;
+        -moz-user-select: none;
+        -webkit-appearance:none;
+        outline: none;
+        border: none;
+	}
+	.input-box{
+		overflow:hidden;
+		border:0.5px solid #EBEBEB;
+		margin-bottom: -1px
+	}
+	.panel-button{
+		width:100%;
+		padding-top: 15px;
+		padding-bottom: 15px;
+		padding-left: 20px;
+		padding-right: 20px;
+		border:1px solid #5cb85c;
+		background-color: #5cb85c;
+		color: white;
+		font-size: 1rem;
+	}
+	.button-div{
+		padding: 15px;
+		margin-top: 10px;
+	}
+	.link{
+		color:#52ace5;
+		font-size:1rem;
+		text-decoration: none;
+	}
+	.link-div{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+</style>
