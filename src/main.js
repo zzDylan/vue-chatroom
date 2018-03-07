@@ -6,7 +6,8 @@ import router from './router'
 import axios from 'axios'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import VeeValidate from 'vee-validate';
+import VeeValidate from 'vee-validate'
+import 'font-awesome/css/font-awesome.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
