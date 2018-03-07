@@ -6,15 +6,15 @@
 				<div>大吉大利今晚IT</div>
 			</div>
 			<div class="input-box">
-				<input name="username" v-validate="'required|max:10'" type="text" placeholder="请输入用户名">
+				<input v-model="username" name="username" v-validate="'required|max:10'" type="text" placeholder="请输入用户名">
 				<span v-show="errors.has('username')" class="error">{{ errors.first('username') }}</span>
 			</div>
 			<div class="input-box">
-				<input name="password" v-validate="'required|min:6|max:18'" type="text" placeholder="请输入密码">
+				<input v-model="password" name="password" v-validate="'required|min:6|max:18'" type="password" placeholder="请输入密码">
 				<span v-show="errors.has('password')" class="error">{{ errors.first('password') }}</span>
 			</div>
 			<div class="input-box">
-				<input name="repassword" v-validate="'confirmed:password'" type="text" placeholder="再次请输入密码">
+				<input name="repassword" v-validate="'confirmed:password'" type="password" placeholder="再次请输入密码">
 				<span v-show="errors.has('repassword')" class="error">{{ errors.first('repassword') }}</span>
 			</div>
 			<div class="button-div">
@@ -29,10 +29,13 @@
 </template>
 
 <script type="text/javascript">
+	import { register } from '@/api/register'
+	import { Toast } from 'mint-ui'
 	export default {
 		data(){
 			return {
-
+				username:'',
+				password:''
 			}
 		},
 		methods:{
@@ -40,11 +43,19 @@
 		      this.$validator.validateAll().then((result) => {
 		        if (result) {
 		          // eslint-disable-next-line
-		          alert('register')
+		          register(this.username,this.password).then(res => {
+		          	const token = res.data.meta.token_type + ' ' + res.data.meta.access_token
+		          	localStorage.setItem('token',token)
+		          	Toast({
+						message:'注册成功'
+					})
+					this.$router.push({ path:'/' })
+		          })
 		          return;
 		        }
-
-		        alert('Correct them errors!')
+		        Toast({
+					message:'表单信息有误'
+				})
 		      });
 		    }
 		},

@@ -6,13 +6,15 @@
 				<div>大吉大利今晚IT</div>
 			</div>
 			<div class="input-box">
-				<input type="text" placeholder="请输入用户名">
+				<input v-model="username" name="username" v-validate="'required|max:10'" type="text" placeholder="请输入用户名">
+				<span v-show="errors.has('username')" class="error">{{ errors.first('username') }}</span>
 			</div>
 			<div class="input-box">
-				<input type="text" placeholder="请输入密码">
+				<input v-model="password" name="password" v-validate="'required|min:6|max:18'" type="password" placeholder="请输入密码">
+				<span v-show="errors.has('password')" class="error">{{ errors.first('password') }}</span>
 			</div>
 			<div class="button-div">
-				<button class="panel-button" type="button">登陆</button>
+				<button @click="login" class="panel-button" type="button">登陆</button>
 			</div>
 			<div class="link-div">
 				<router-link to="/register" href="" class="link">注册</router-link>
@@ -23,7 +25,40 @@
 </template>
 
 <script type="text/javascript">
-	
+	import { login } from '@/api/login'
+	import { Toast } from 'mint-ui'
+	export default {
+		data(){
+			return {
+				username:'',
+				password:''
+			}
+		},
+		methods:{
+			login() {
+		      this.$validator.validateAll().then((result) => {
+		        if (result) {
+		          // eslint-disable-next-line
+		          login(this.username,this.password).then(res => {
+		          	const token = res.data.meta.token_type + ' ' + res.data.meta.access_token
+		          	localStorage.setItem('token',token)
+		          	Toast({
+						message:'登录成功'
+					})
+					this.$router.push({ path:'/' })
+		          })
+		          return;
+		        }
+		        Toast({
+					message:'表单信息有误'
+				})
+		      });
+		    }
+		},
+		computed:{
+			
+		}
+	}
 </script>
 
 <style>
@@ -94,5 +129,9 @@
 	.link-div{
 		margin-left: 15px;
 		margin-right: 15px;
+	}
+	.error{
+		text-align: center;
+		color:red;
 	}
 </style>

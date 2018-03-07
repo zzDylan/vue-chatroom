@@ -11,7 +11,10 @@ export default new Router({
     {
       path: '/',
       name: 'Chatroom',
-      component: Chatroom
+      component: Chatroom,
+      meta: {
+        requiredLogin:true
+      }
     },
     {
       path: '/login',

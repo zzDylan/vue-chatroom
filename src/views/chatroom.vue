@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<div ref="box" id="box" class="box">
+		<div class="box-header">
+			<div class="online-count">当前在线人数{{onlineCount}}</div>
+		</div>
+		<div ref="box" class="box">
 			<div v-for="(item,index) in items">
 				<div v-if="item.type=='message'" :class="['chat-box',item.isMine?'chat-mine':'']">
 					<img class="avatar" :src="item.avatar">
@@ -22,7 +25,7 @@
 		</div>
 		<div class="box-footer">
 			<div class="chat-send">
-				<input v-model="message" type="text">
+				<input v-model="message" v-on:keyup.enter="sendMessage" type="text">
 				<button @click="sendMessage" class="send-button">发送</button>
 			</div>
 		</div>
@@ -49,14 +52,9 @@
 					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1},
 					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1},
 					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1},
-					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1},
-					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1},
-					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1},
-					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1},
-					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-girl.jpg'),isMine:0},
-					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-girl.jpg'),isMine:0},
-					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-girl.jpg'),isMine:0}
-				]
+					{type:'message',nickname:'网名',content:'测试内容',avatar:require('@/assets/avatar-boy.jpg'),isMine:1}
+				],
+				onlineCount:0
 			}
 		},
 		methods: {
@@ -68,12 +66,12 @@
                 onmessage:function(e){
                 	// json数据转换成js对象
                     const data = eval("(" + e.data + ")");
-                    console.log(data);
+                    //console.log(data);
                     const type = data.type || '';
                     switch (type) {
                         case 'bind':
                             bind(data.client_id).then(res => {
-                            	console.log(res.data)
+                            	//console.log(res.data)
                             })
                             break;
                         case 'inform':
@@ -82,32 +80,57 @@
                         case 'message':
                         	this.items.push(data)
                             break;
+                        case 'updateOnlineCount':
+                            this.onlineCount = data.onlineCount
+                            break;
                         default :
-                            console.log(e.data);
+                            //console.log(e.data);
                     }
                 },
                 sendMessage:function(){
                 	sendMessage(this.message).then(res => {
-                		const pushData = {type:'message',nickname:'自己',content:this.message,avatar:require('@/assets/avatar-boy.jpg'),isMine:0}
-                    	this.items.push(pushData)
+                		// const pushData = {type:'message',nickname:'自己',content:this.message,avatar:require('@/assets/avatar-boy.jpg'),isMine:0}
+                  //   	this.items.push(pushData)
                     	this.message = ''
                     })
+                },
+                scrollToBottom: function (){
+                	this.$nextTick(() => {
+						const box = this.$refs.box
+						console.log(box.scrollHeight)
+						console.log(box.scrollTop)
+						box.scrollTop = box.scrollHeight
+						console.log(box.scrollTop)
+					})
                 }
+
 		},
 		created() {
 			const wsServer = 'ws://111.231.118.189:8282'
 			this.ws = new WebSocket(wsServer)
 			this.ws.onmessage = this.onmessage
 		},
-		mounted() {
-			this.scrollToBottom()
+		watch: {
+			'items': 'scrollToBottom'
 		}
 	}
 </script>
 <style type="text/css">
+	.online-count{
+		text-align: center;
+		color:#3c763d;
+	}
+	.box-header{
+		position:fixed; 
+		top:0;
+		width:100%;
+		background-color: #eee
+	}
 	.box{
 		padding: 20px;
-		margin-bottom: 50px
+		margin-bottom: 50px;
+		height: 100%;
+		overflow:scroll;
 	}
 	.chat-box{
 		display: flex;
