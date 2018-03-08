@@ -1,8 +1,6 @@
 <template>
 	<div style="height:100%">
-		<div class="box-header">
-			<div class="online-count">当前在线人数{{onlineCount}}</div>
-		</div>
+		<box-header :online-count="onlineCount"></box-header>
 		<div ref="box" class="box">
 			<div v-for="(item,index) in items">
 				<div v-if="item.type=='message'" :class="['chat-box',item.isMine?'chat-mine':'']">
@@ -29,39 +27,31 @@
 				</div>
 			</div>
 		</div>
-		<div class="box-footer">
-			<div class="chat-send">
-				<input v-model="message" v-bind:focus="focus" v-on:keyup.enter="sendMessage" type="text">
-				<mt-button type="primary" @click="sendMessage" :disabled="trim(message)==''?true:false">发送</mt-button>
-			</div>
-		</div>
+		<box-footer @updateStatus="updateStatus" @pushItem="pushItem" test="1" :message-index="messageIndex"></box-footer>
 	</div>
 </template>
 <script type="text/javascript">
+	import BoxHeader from '@/components/BoxHeader'
+	import BoxFooter from '@/components/BoxFooter'
 	import { bind } from '@/api/bind'
-	import { sendMessage } from '@/api/sendMessage'
 	export default {
 		data() {
 			return {
 				ws:null,
-				message:'',
 				items:[],
 				onlineCount:0,
 				focus:true,
 				wsServer:'ws://111.231.118.189:8282'
 			}
 		},
-		directives: {
-    		focus: {
-			    inserted: function (el, {value}) {
-				    console.log(el,{value})
-				    if (value) {
-				        el.focus();
-				    }
-			    }
-			 }
-		},
+		components:{ BoxHeader,BoxFooter },
 		methods: {
+				pushItem:function(item){
+					this.items.push(item)
+				},
+				updateStatus:function(data){
+                	this.items[data.messageIndex].status = data.status
+				},
                 onmessage:function(e){
                 	// json数据转换成js对象
                     const data = eval("(" + e.data + ")");
@@ -102,39 +92,23 @@
                     this.ws.onmessage = this.onmessage
                     this.ws.onclose = this.disConnect
                 },
-                sendMessage:function(){
-                	if(this.trim(this.message) == ''){
-                		return
-                	}
-                	const userinfo = JSON.parse(localStorage.getItem('userinfo'))
-            		const pushData = {type:'message',nickname:userinfo.username,content:this.message,avatar:userinfo.avatar,isMine:1,status:'sending'}
-                	this.items.push(pushData)
-                	const messageIndex = this.items.length - 1
-                	const message = this.message
-                	this.message = ''
-                	this.focus = true
-                	sendMessage(message).then(res => {
-                		this.items[messageIndex]['status'] = 'success'
-                    }).catch(error => {
-                    	this.items[messageIndex]['status'] = 'error'
-                    })
-                },
                 scrollToBottom: function (){
                 	this.$nextTick(() => {
 						const box = this.$refs.box
 						box.scrollTop = box.scrollHeight
 					})
-                },
-                //去左右空格;
-				trim:function(string){
-				    return string.replace(/(^\s*)|(\s*$)/g, "")
-				}
+                }
 
 		},
 		created() {
 			this.ws = new WebSocket(this.wsServer)
 			this.ws.onmessage = this.onmessage
 			this.ws.onclose = this.disConnect
+		},
+		computed: {
+			messageIndex:function(){
+				return this.items.length - 1
+			}
 		},
 		watch: {
 			'items': 'scrollToBottom'
@@ -145,12 +119,6 @@
 	.online-count{
 		text-align: center;
 		color:#3c763d;
-	}
-	.box-header{
-		position:fixed; 
-		top:0;
-		width:100%;
-		background-color: #eee
 	}
 	.box{
 		padding: 20px;
@@ -205,13 +173,6 @@
 		border-color: #fff transparent transparent #fff;
 		margin-top: 5px
 	}
-	.box-footer{
-		position:fixed; 
-		bottom:0;
-		width:100%;
-		right: 10px;
-		background-color: #eee
-	}
 	.send-button{
 		border-radius: 3px;
 	    height: 40px;
@@ -220,21 +181,6 @@
 	    margin-left: 10px;
 	    background-color: #5FB878;
 	    color: #fff;
-	}
-	.chat-send{
-		display: flex;
-	}
-	.chat-send input {
-	    -webkit-box-flex: 1;
-	    -webkit-flex: 1;
-	    flex: 1;
-	    height: 40px;
-	    padding-left: 5px;
-	    border: 0;
-	    background-color: #fff;
-	    border-radius: 3px;
-	    line-height: normal;
-	    margin-left:20px;
 	}
 	.inform{
 		text-align: center;
