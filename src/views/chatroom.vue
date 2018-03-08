@@ -6,7 +6,7 @@
 				<div v-if="item.type=='message'" :class="['chat-box',item.isMine?'chat-mine':'']">
 					<img class="avatar" :src="item.avatar">
 					<div class="chat-item">
-						<div class="chat-nickname">{{item.nickname}}</div>
+						<div :class="[item.isMine?'chat-nickname-right':'chat-nickname-left']">{{item.nickname}}</div>
 						<div class="chat-content">
 							<div class="chat-triangle"></div>
 							<div class="chat-text">{{item.content}}</div>
@@ -135,8 +135,12 @@
 		width:40px;
 		height: 40px;
 	}
-	.chat-nickname{
-		margin-left: 50%
+	.chat-nickname-left{
+		margin-left: 20px;
+	}
+	.chat-nickname-right{
+		margin-right: 20px;
+		text-align: right;
 	}
 	.chat-item{
 		/*margin-left: 10px*/

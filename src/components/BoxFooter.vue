@@ -18,6 +18,9 @@
 		props:['messageIndex'],
 		methods:{
 			sendMessage:function(){
+				if(this.trim(this.message) == ''){
+					return
+				}
             	const userinfo = JSON.parse(localStorage.getItem('userinfo'))
         		const pushData = {type:'message',nickname:userinfo.username,content:this.message,avatar:userinfo.avatar,isMine:1,status:'sending'}
         		this.$emit('pushItem',pushData)
