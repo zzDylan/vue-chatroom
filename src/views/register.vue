@@ -97,13 +97,13 @@
 		background-color:transparent;
 		font-size: 1rem;
 		/*消除高亮*/
-		-webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+/*		-webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
         -webkit-user-select: none;
         -moz-user-focus: none;
         -moz-user-select: none;
         -webkit-appearance:none;
         outline: none;
-        border: none;
+        border: none;*/
 	}
 	.input-box{
 		overflow:hidden;
