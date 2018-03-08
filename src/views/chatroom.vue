@@ -1,6 +1,6 @@
 <template>
 	<div style="height:100%">
-		<box-header :online-count="onlineCount"></box-header>
+		<box-header :online-count="onlineCount" :online-user="onlineUser"></box-header>
 		<div ref="box" class="box">
 			<div v-for="(item,index) in items">
 				<div v-if="item.type=='message'" :class="['chat-box',item.isMine?'chat-mine':'']">
@@ -40,6 +40,7 @@
 				ws:null,
 				items:[],
 				onlineCount:0,
+				onlineUser:[],
 				focus:true,
 				wsServer:'ws://111.231.118.189:8282'
 			}
@@ -70,8 +71,9 @@
                         case 'message':
                         	this.items.push(data)
                             break;
-                        case 'updateOnlineCount':
+                        case 'updateOnline':
                             this.onlineCount = data.onlineCount
+                            this.onlineUser = data.onlineUser
                             break;
                         default :
                             //console.log(e.data);
