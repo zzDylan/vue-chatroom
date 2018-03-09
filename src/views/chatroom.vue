@@ -127,6 +127,7 @@
 		margin-bottom: 50px;
 		height: 100%;
 		overflow:scroll;
+		-webkit-overflow-scrolling: touch;
 	}
 	.chat-box{
 		display: flex;

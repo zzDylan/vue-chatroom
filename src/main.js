@@ -8,11 +8,13 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import VeeValidate from 'vee-validate'
 import 'font-awesome/css/font-awesome.css'
+import fastclick from 'fastclick'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.use(VeeValidate)
 Vue.use(MintUI)
+fastclick.attach(document.body)
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requiredLogin) {  // 判断该路由是否需要登录权限

@@ -6,6 +6,7 @@
 				<span v-for="(user,index) in onlineUser">
 					{{user.username}}
 				</span>
+				<div style="color:#DA70D6">有兴趣讨论聊天室开发的朋友可加qq群633379170</div>
 			</div>
 		</div>
 	</div>
