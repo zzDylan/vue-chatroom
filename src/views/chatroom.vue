@@ -3,7 +3,7 @@
 		<box-header :online-count="onlineCount" :online-user="onlineUser"></box-header>
 		<div ref="box" class="box">
 			<div v-for="(item,index) in items">
-				<div v-if="item.type=='message'" :class="['chat-box',item.isMine?'chat-mine':'']">
+				<div v-if="item.type=='text'" :class="['chat-box',item.isMine?'chat-mine':'']">
 					<img class="avatar" :src="item.avatar">
 					<div class="chat-item">
 						<div :class="[item.isMine?'chat-nickname-right':'chat-nickname-left']">{{item.nickname}}</div>
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 		</div>
-		<box-footer @updateStatus="updateStatus" @pushItem="pushItem" test="1" :message-index="messageIndex"></box-footer>
+		<box-footer @updateStatus="updateStatus" @pushItem="pushItem" :message-index="messageIndex"></box-footer>
 	</div>
 </template>
 <script type="text/javascript">
@@ -68,7 +68,7 @@
                         case 'inform':
                         	this.items.push(data)
                             break;
-                        case 'message':
+                        case 'text':
                         	this.items.push(data)
                             break;
                         case 'updateOnline':

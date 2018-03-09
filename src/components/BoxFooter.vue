@@ -1,36 +1,37 @@
 <template>
 	<div class="box-footer">
 		<div class="chat-send">
-			<input v-model="message" v-bind:focus="focus" v-on:keyup.enter="sendMessage" type="text">
-			<mt-button type="primary" @click="sendMessage" :disabled="trim(message)==''?true:false">发送</mt-button>
+			<input v-model="text" v-bind:focus="focus" v-on:keyup.enter="sendText" type="text">
+			<mt-button type="primary" @click="sendText" :disabled="trim(text)==''?true:false">发送</mt-button>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
-	import { sendMessage } from '@/api/sendMessage'
+	import { sendText } from '@/api/sendText'
 	export default {
 		data() {
 			return {
-				message:'',
+				text:'',
 				focus:true
 			}
 		},
 		props:['messageIndex'],
 		methods:{
-			sendMessage:function(){
-				if(this.trim(this.message) == ''){
+			sendText:function(){
+				if(this.trim(this.text) == ''){
 					return
 				}
             	const userinfo = JSON.parse(localStorage.getItem('userinfo'))
-        		const pushData = {type:'message',nickname:userinfo.username,content:this.message,avatar:userinfo.avatar,isMine:1,status:'sending'}
+        		const pushData = {type:'text',nickname:userinfo.username,content:this.text,avatar:userinfo.avatar,isMine:1,status:'sending'}
         		this.$emit('pushItem',pushData)
-        		const message = this.message
-        		this.message = ''
-            	sendMessage(message).then(res => {
+        		const text = this.text
+        		this.text = ''
+            	sendText(text).then(res => {
             		this.$emit('updateStatus',{messageIndex:this.messageIndex,status:'success'})
                 }).catch(error => {
                 	this.$emit('updateStatus',{messageIndex:this.messageIndex,status:'error'})
                 })
+				
             },
 			//去左右空格;
 			trim:function(string){
