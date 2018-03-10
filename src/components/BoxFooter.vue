@@ -32,14 +32,16 @@
 					return
 				}
             	const userinfo = JSON.parse(localStorage.getItem('userinfo'))
-        		const pushData = {type:'text',nickname:userinfo.username,content:this.text,avatar:userinfo.avatar,isMine:1,status:'sending'}
+        		// const pushData = {type:'text',nickname:userinfo.username,content:this.text,avatar:userinfo.avatar,isMine:1,status:'sending'}
+        		const pushData = {type:'text',nickname:userinfo.username,content:this.text,avatar:userinfo.avatar,isMine:1,status:''}
         		this.$emit('pushItem',pushData)
         		const text = this.text
         		this.text = ''
+        		const messageIndex = this.messageIndex
             	sendText(text).then(res => {
-            		this.$emit('updateStatus',{messageIndex:this.messageIndex,status:'success'})
+            		//this.$emit('updateStatus',{messageIndex:messageIndex,status:'success'})
                 }).catch(error => {
-                	this.$emit('updateStatus',{messageIndex:this.messageIndex,status:'error'})
+                	//this.$emit('updateStatus',{messageIndex:messageIndex,status:'error'})
                 })
 				
             },
