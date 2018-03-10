@@ -13,6 +13,7 @@
 <script type="text/javascript">
 	import { sendText } from '@/api/sendText'
 	import { sendImage } from '@/api/sendImage'
+	import { Toast } from 'mint-ui';
 	export default {
 		data() {
 			return {
@@ -50,7 +51,7 @@
 			    formdata.append('image',event.target.files[0]);
 			    sendImage(formdata).then(res => {
 			    	const userinfo = JSON.parse(localStorage.getItem('userinfo'))
-        			const pushData = {type:'image',nickname:userinfo.username,content:res.data.imageUrl,avatar:userinfo.avatar,isMine:1,status:'sending'}
+        			const pushData = {type:'image',nickname:userinfo.username,content:res.data.imageUrl,avatar:userinfo.avatar,isMine:1,status:''}
         			this.$emit('pushItem',pushData)
 			    	this.$refs.imageForm.reset()
 			    	this.$emit('updateStatus',{messageIndex:this.messageIndex,status:'success'})

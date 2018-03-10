@@ -90,6 +90,9 @@
                         case 'text':
                         	this.items.push(data)
                             break;
+                        case 'image':
+                    	this.items.push(data)
+                        break;
                         case 'updateOnline':
                             this.onlineCount = data.onlineCount
                             this.onlineUser = data.onlineUser
