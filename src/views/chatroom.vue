@@ -20,6 +20,25 @@
 					</div>
 				</div>
 
+				<div v-if="item.type=='image'" :class="['chat-box',item.isMine?'chat-mine':'']">
+					<img class="avatar" :src="item.avatar">
+					<div class="chat-item">
+						<div :class="[item.isMine?'chat-nickname-right':'chat-nickname-left']">{{item.nickname}}</div>
+						<div class="chat-content">
+							<div class="chat-triangle"></div>
+							<div class="chat-text">
+								<img :src="item.content">
+							</div>
+							<div v-if="item.isMine" class="icon-div">
+								<span v-if="item.status=='sending'" class="fa fa-circle-o-notch fa-spin"></span>
+								<span v-if="item.status=='error'" class="fa fa-exclamation-circle"></span>
+								<span v-if="item.status=='success'"></span>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
 				<div v-if="item.type=='inform'">
 					<div class="inform">
 						{{ item.content }}
