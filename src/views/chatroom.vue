@@ -123,6 +123,7 @@
 		color:#3c763d;
 	}
 	.box{
+		margin-top: 20px;
 		padding: 20px;
 		margin-bottom: 50px;
 		height: 100%;
